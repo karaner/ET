@@ -114,14 +114,20 @@ namespace ET
 
             this.typeSystems = new TypeSystems();
 
-            foreach (Type type in this.GetTypes(typeof (ObjectSystemAttribute)))
+            var withObjectSystemAtrrTypes = this.GetTypes(typeof(ObjectSystemAttribute));
+
+            foreach (Type type in withObjectSystemAtrrTypes)
             {
-                object obj = Activator.CreateInstance(type);
+                object obj = Activator.CreateInstance(type); 
 
                 if (obj is ISystemType iSystemType)
                 {
-                    OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
-                    oneTypeSystems.Map.Add(iSystemType.SystemType(), obj);
+                    var classFileType = iSystemType.Type();  //这里是带ObjectSystem属性的类，继承子类的时候，传的泛型的类型
+                    OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(classFileType);
+
+                    //SystemType() 是带ObjectSystem属性的类继承的子类实现的接口类型 obj是带ObjectSystem属性的类的实例
+                    var systemType = iSystemType.SystemType(); // ET.IAwakeSystem
+                    oneTypeSystems.Map.Add(systemType, obj);
                     InstanceQueueIndex index = iSystemType.GetInstanceQueueIndex();
                     if (index > InstanceQueueIndex.None && index < InstanceQueueIndex.Max)
                     {
