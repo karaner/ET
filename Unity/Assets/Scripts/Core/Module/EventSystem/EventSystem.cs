@@ -146,17 +146,17 @@ namespace ET
 
                     Type eventType = obj.Type;
 
-                    EventInfo eventInfo = new(obj, eventAttribute.SceneType);
+                    EventInfo eventInfo = new(obj, eventAttribute.SceneType); //eventInfo包含有InvokeAttribute的并且继承了IInvoke的类的实例 和 SceneType信息
 
                     if (!this.allEvents.ContainsKey(eventType))
                     {
                         this.allEvents.Add(eventType, new List<EventInfo>());
                     }
-                    this.allEvents[eventType].Add(eventInfo);
+                    this.allEvents[eventType].Add(eventInfo); //key : 有EventAttribute的并且继承了IEvent的类的类型
                 }
             }
 
-            this.allInvokes = new Dictionary<Type, Dictionary<int, object>>();
+            this.allInvokes = new Dictionary<Type, Dictionary<int, object>>(); //Type：有InvokeAttribute的并且继承了IInvoke的类的类型
             foreach (Type type in types[typeof (InvokeAttribute)])
             {
                 object obj = Activator.CreateInstance(type);
@@ -179,7 +179,7 @@ namespace ET
                     
                     try
                     {
-                        dict.Add(invokeAttribute.Type, obj);
+                        dict.Add(invokeAttribute.Type, obj);    //key：InvokeAttribute类型  value:有InvokeAttribute的并且继承了IInvoke的类的实例
                     }
                     catch (Exception e)
                     {
