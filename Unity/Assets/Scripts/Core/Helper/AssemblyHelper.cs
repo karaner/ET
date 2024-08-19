@@ -14,7 +14,7 @@ namespace ET
             {
                 foreach (Type type in ass.GetTypes())
                 {
-                    types[type.FullName] = type;
+                    types[type.FullName] = type;            //FullName:System.Runtime.CompilerServices.IsUnmanagedAttribute 带命名空间路径
                 }
             }
 
